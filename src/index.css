@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes floatingSlow {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(20px, 20px); }
+  }
+  
+  @keyframes floatingSlower {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-20px, 10px); }
+  }
+  
+  .animate-floatingSlow {
+    animation: floatingSlow 12s ease-in-out infinite;
+  }
+  
+  .animate-floatingSlower {
+    animation: floatingSlower 18s ease-in-out infinite;
+  }
