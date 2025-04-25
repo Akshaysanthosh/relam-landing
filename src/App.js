@@ -12,6 +12,8 @@ import WaitlistForm from './components/WaitlistForm';
 import Footer from './components/Footer';
 import TransitionBanner from './components/TransitionBanner';
 import Usecase from './components/Usecase';
+import Solutions from './components/Solutions';
+
 
 
 
@@ -25,7 +27,7 @@ function App() {
         <Features />
         <Usecase />
         <HowRelamWorks />
-        <UseCases />
+        < Solutions />
         <DetailedAnalysisCTA />
         <RecentInsights />
         <GrowYourBusinessCTA />

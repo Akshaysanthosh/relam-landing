@@ -1,147 +1,281 @@
-import React, { useState, useEffect } from "react";
-import { EnvelopeIcon, PhoneIcon, LinkIcon } from "@heroicons/react/24/outline"; // Corrected import for Heroicons v2
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const tabs = ["Sales Development", "Account Executive", "Account Management", "RevOps", "Demand Generation"];
+/* Slack brand palette (light mode) */
+const SLACK = {
+  aubergine: "#4A154B",
+  blue:      "#36C5F0",
+  green:     "#2EB67D",
+  yellow:    "#ECB22E",
+  red:       "#E01E5A",
+  sidebar:   "#350D36",
+  bgDark:    "#3E1141",
+};
 
+/* ──────────────────────────────────────────────────────────── */
+/*                   Realistic Slack UI Mock                   */
+/* ──────────────────────────────────────────────────────────── */
+function SlackMock({ messages }) {
+  const channels = [
+    { id: "gen", name: "general" },
+    { id: "rnd", name: "random" },
+    { id: "sig", name: "relam-signals", active: true },
+    { id: "mkt", name: "marketing" },
+    { id: "cal", name: "calendar-app", isApp: true },
+  ];
+
+  return (
+    <div className="w-full max-w-[900px] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/10 bg-white font-[Inter]">
+      {/* WORKSPACE HEADER */}
+      <div className="flex items-center justify-between h-10 px-4 bg-gray-100 border-b">
+        <div className="flex items-center space-x-2">
+          <div className="h-6 w-6 rounded-md bg-gray-300" />
+          <span className="text-sm font-semibold text-gray-900">Acme Inc.</span>
+        </div>
+        <div className="flex gap-1">
+          <span className="h-2 w-2 rounded-full" style={{ background: SLACK.red }} />
+          <span className="h-2 w-2 rounded-full" style={{ background: SLACK.yellow }} />
+          <span className="h-2 w-2 rounded-full" style={{ background: SLACK.green }} />
+        </div>
+      </div>
+
+      <div className="flex h-[520px]">
+        {/* SIDEBAR */}
+        <aside
+          className="hidden md:flex w-60 flex-col text-sm text-white"
+          style={{ background: SLACK.sidebar }}
+        >
+          {/* user card */}
+          <div className="flex items-center space-x-3 px-4 py-3 border-b border-white/10">
+            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center font-bold">
+              R
+            </div>
+            <div>
+              <p className="font-semibold leading-none">Relam Bot</p>
+              <p className="flex items-center text-xs text-green-400">
+                <span className="h-2 w-2 mr-1 rounded-full bg-green-400" />
+                Active
+              </p>
+            </div>
+          </div>
+
+          {/* channels */}
+          <div className="flex-1 overflow-y-auto py-3 space-y-0.5">
+            {channels.map((ch) => (
+              <div
+                key={ch.id}
+                className={`flex items-center px-4 py-1.5 cursor-default ${
+                  ch.active ? "bg-[#7b3b92]/60" : "hover:bg-white/10"
+                }`}
+              >
+                {ch.isApp ? (
+                  <span className="mr-2 text-[10px]">⚡️</span>
+                ) : (
+                  <span className="mr-2 text-[10px]">#</span>
+                )}
+                <span className="truncate">{ch.name}</span>
+              </div>
+            ))}
+          </div>
+        </aside>
+
+        {/* MAIN PANE */}
+        <div className="flex-1 flex flex-col bg-[#F8F8F8]">
+          {/* toolbar */}
+          <div className="flex items-center space-x-6 pl-6 h-10 border-b">
+            {["Home", "Messages", "About"].map((t) => (
+              <button
+                key={t}
+                className="relative text-sm font-medium text-gray-700 hover:text-gray-900 after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform"
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+          {/* messages */}
+          <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+            <AnimatePresence mode="popLayout" initial={false}>
+              {messages.map((m, idx) => (
+                <motion.div
+                  key={m.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.35, delay: idx * 0.12 }}
+                  className="flex items-start space-x-3"
+                >
+                  <div className="h-9 w-9 rounded-full bg-blue-500 flex items-center justify-center text-xs font-bold text-white">
+                    R
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-baseline space-x-2">
+                      <span className="text-sm font-semibold text-gray-900">{m.sender}</span>
+                      <span className="text-xs text-gray-500">{m.time}</span>
+                    </div>
+                    <div className="mt-1 leading-relaxed text-[15px] text-gray-900">{m.text}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            <div className="my-8 border-t" />
+
+            {/* typing */}
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="h-2 w-2 rounded-full bg-gray-400 animate-bounce"
+                  style={{ animationDelay: `${i * 0.15}s` }}
+                />
+              ))}
+              <span className="pl-2 text-xs text-gray-500">Relam Bot is thinking…</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────── */
+/*                     Persona-specific data                    */
+/* ──────────────────────────────────────────────────────────── */
 const useCases = [
   {
-    title: "12 Whitespace Suggested Companies",
-    subtitle: "Explore potential in your broader target market",
-    learnMoreUrl: "#",
-    suggestions: [
+    tab: "Sales Development",
+    messages: [
       {
-        company: "Smartsheet",
-        logo: "/logos/smartsheet.png",
-        fitStatus: ["Great Account Fit", "Not in CRM"],
-        timing: "Now is a good time to reach out",
-        signals: [
-          "Actively Researched: Security, Penetration Testing, and +1 more",
-          "Maria Purcell promoted to International Sales Head",
-        ],
+        id: 1,
+        sender: "Relam Bot",
+        time:  "10:24 AM",
+        text:  (
+          <>
+            <strong>Smartsheet</strong> added <strong>Security &amp; Pen-Testing</strong> to
+            their buying research. SDR team: perfect time to sequence! 🚀
+          </>
+        ),
+      },
+      {
+        id: 2,
+        sender: "Relam Bot",
+        time:  "10:26 AM",
+        text:  (
+          <>
+            Champion <strong>Maria Purcell</strong> promoted to Intl. Sales Head — send
+            congrats &amp; secure intro 📈
+          </>
+        ),
       },
     ],
-    recommendedPlay: {
-      action: "Engage Prospect with C-level Buying Group Member",
-      cta: "Add buyers to CRM",
-      introduce: "Introduce yourself to Maria Purcell",
-    },
+  },
+  {
+    tab: "Account Executive",
+    messages: [
+      {
+        id: 1,
+        sender: "Relam Bot",
+        time:  "09:18 AM",
+        text:  (
+          <>
+            <strong>Acme Corp</strong> pilot stalling. Competitor <strong>Vendor X</strong>{" "}
+            discount detected. Battlecard →{" "}
+            <span className="underline text-blue-600">link</span>
+          </>
+        ),
+      },
+      {
+        id: 2,
+        sender: "Relam Bot",
+        time:  "09:21 AM",
+        text:  (
+          <>
+            CFO joined thread. Highlight <em>cost-savings</em> slide for tomorrow’s demo 💡
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    tab: "Account Management",
+    messages: [
+      {
+        id: 1,
+        sender: "Relam Bot",
+        time:  "2:03 PM",
+        text:  (
+          <>
+            Expansion trigger: <strong>Globex</strong> opened 3 new regions. Surface upsell
+            proposal 📊
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    tab: "RevOps",
+    messages: [
+      {
+        id: 1,
+        sender: "Relam Bot",
+        time:  "8:00 AM",
+        text:  (
+          <>
+            Pipeline alert: <strong>7 deals</strong> impacted by competitor under-cutting.
+            Adjust forecast −3.2 %.
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    tab: "Demand Generation",
+    messages: [
+      {
+        id: 1,
+        sender: "Relam Bot",
+        time:  "4:42 PM",
+        text:  (
+          <>
+            <strong>Healthcare AI</strong> topic up +45 % WoW. Launch LinkedIn campaign
+            draft now.
+          </>
+        ),
+      },
+    ],
   },
 ];
 
+/* ──────────────────────────────────────────────────────────── */
+/*                          Main Component                     */
+/* ──────────────────────────────────────────────────────────── */
 export default function Usecase() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const useCase = useCases[0]; // Static for now.
-
-  const handleTabChange = (index) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setActiveTab(index);
-      setIsLoading(false);
-    }, 600);
-  };
+  const [active, setActive] = useState(0);
 
   return (
-    <section className="w-full py-20 bg-gradient-to-r from-blue-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-b-3xl">
+    <section className="w-full py-24 bg-gradient-to-r from-blue-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-6">
-
-        {/* Tabs */}
-        <div className="flex overflow-x-auto justify-center gap-4 mb-10 scrollbar-hide">
-          {tabs.map((tab, index) => (
+        {/* tab bar */}
+        <div className="flex overflow-x-auto gap-4 mb-16 justify-center scrollbar-hide mask-fade">
+          {useCases.map((u, i) => (
             <button
-              key={tab}
-              onClick={() => handleTabChange(index)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition whitespace-nowrap ${
-                activeTab === index
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-800 hover:bg-gray-200"
-              }`}
+              key={u.tab}
+              onClick={() => setActive(i)}
+              className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition
+                ${i === active
+                  ? "border-2 border-blue-600 text-blue-600 bg-white/90 dark:bg-gray-800"
+                  : "border border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-800/40"}`}
             >
-              {tab}
+              {u.tab}
             </button>
           ))}
         </div>
 
-        {/* Card */}
-        <div className="relative bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-8 min-h-[400px] transition-all duration-500 ease-in-out">
-
-          {isLoading ? (
-            // Loading shimmer skeleton
-            <div className="animate-pulse space-y-6">
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-              <div className="space-y-3 mt-6">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-                ))}
-              </div>
-              <div className="h-10 w-40 bg-gray-200 dark:bg-gray-700 rounded-full mt-6"></div>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-6 transition-all duration-700 delay-150">
-              {/* Header */}
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{useCase.title}</h3>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">{useCase.subtitle}</p>
-                </div>
-                <a href={useCase.learnMoreUrl} className="text-blue-600 text-sm font-semibold hover:underline">
-                  Learn More
-                </a>
-              </div>
-
-              {/* Company Block */}
-              {useCase.suggestions.map((sugg) => (
-                <div key={sugg.company} className="flex flex-col gap-2">
-                  <div className="flex items-center gap-4">
-                    <img src={sugg.logo} alt={sugg.company} className="w-12 h-12 rounded-full bg-gray-100" />
-                    <div>
-                      <h4 className="text-lg font-semibold text-blue-700">{sugg.company}</h4>
-                      <div className="flex gap-2 mt-1">
-                        {sugg.fitStatus.map((status) => (
-                          <span key={status} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
-                            {status}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-green-600 dark:text-green-400 font-medium">{sugg.timing}</p>
-                  <ul className="text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
-                    {sugg.signals.map((signal, idx) => (
-                      <li key={idx}>{signal}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-
-              {/* Recommended Play */}
-              <div className="mt-8 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl">
-                <h5 className="text-md font-semibold mb-2 dark:text-white">{useCase.recommendedPlay.action}</h5>
-                <button className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
-                  {useCase.recommendedPlay.cta}
-                </button>
-                <div className="mt-6 flex items-center justify-between bg-white dark:bg-gray-900 p-4 rounded-full shadow-md">
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">{useCase.recommendedPlay.introduce}</span>
-                  <div className="flex gap-2">
-                    <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                      <EnvelopeIcon className="w-5 h-5 text-purple-600" />
-                    </button>
-                    <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                      <PhoneIcon className="w-5 h-5 text-blue-600" />
-                    </button>
-                    <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                      <LinkIcon className="w-5 h-5 text-pink-600" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          )}
+        {/* Slack mock */}
+        <div className="flex justify-center">
+          <SlackMock messages={useCases[active].messages} />
         </div>
-
       </div>
     </section>
   );
