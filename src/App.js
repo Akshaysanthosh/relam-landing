@@ -13,6 +13,8 @@ import Footer from './components/Footer';
 import TransitionBanner from './components/TransitionBanner';
 import Usecase from './components/Usecase';
 import Solutions from './components/Solutions';
+import Faq from './components/Faq';
+import CoreFeatures from './components/CoreFeatures';
 
 
 
@@ -24,11 +26,12 @@ function App() {
       <main>
         <Hero />
         <TransitionBanner/>
+        <CoreFeatures />
         <Features />
-        <Usecase />
+        <Solutions />
         <HowRelamWorks />
-        < Solutions />
         <DetailedAnalysisCTA />
+        <Faq />
         <RecentInsights />
         <GrowYourBusinessCTA />
         <WaitlistForm />

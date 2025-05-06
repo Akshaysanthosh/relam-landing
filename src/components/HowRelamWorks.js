@@ -1,159 +1,106 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import {
-  MapIcon,
-  LockClosedIcon,
-  CubeTransparentIcon,
-  ServerStackIcon,
-  ArrowRightIcon,
-} from '@heroicons/react/24/outline';
 
 export default function HowRelamWorks() {
+  const steps = [
+    {
+      num: '01',
+      title: 'Connect Your Tools',
+      desc:
+        'Integrate your CRM and Slack—no engineering work needed. SignalLake starts collecting data instantly.',
+      img: '/illustrations/connect-tools.png',
+      logos: ['/logos/slack.svg', '/logos/hubspot.svg'],
+    },
+    {
+      num: '02',
+      title: 'Define What Matters',
+      desc:
+        'Add competitors, customers, or partners and pick the signals you care about—funding, tech‑stack changes, product launches, more.',
+      img: '/illustrations/define-matters.png',
+      logos: ['/logos/notion.svg', '/logos/figma.svg'],
+    },
+    {
+      num: '03',
+      title: 'Let the Agents Work',
+      desc:
+        'Our AI Agents scrape the web and digest your internal docs 24/7, so dashboards are always current—no manual tagging.',
+      img: '/illustrations/agents-work.png',
+      logos: ['/logos/openai.svg', '/logos/zapier.svg'],
+    },
+    {
+      num: '04',
+      title: 'Get Actionable Insights',
+      desc:
+        'Battlecards, alerts, and summaries flow straight into Slack and email so teams can act without leaving their workflow.',
+      img: '/illustrations/actionable-insights.png',
+      logos: ['/logos/slack.svg', '/logos/gmail.svg'],
+    },
+  ];
+
   return (
-    <section
-      id="how-it-works"
-      className="bg-white dark:bg-gray-900 py-24 px-4 sm:px-6 lg:px-8"
-    >
-      {/* ─────────────  Section Title  ───────────── */}
-      <motion.div
-        className="text-center mb-20 max-w-2xl mx-auto"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-          Powerful Insights
-          <br />
-          Built on Reliable Data
-        </h2>
-      </motion.div>
+    <section id="how-it-works" className="bg-white py-28 md:py-32">
+      <div className="max-w-[1200px] mx-auto px-6">
+        {/* ─────────────  Section Heading  ───────────── */}
+        <h1 className="text-3xl md:text-4xl font-bold text-[#0B0E1C] mb-16 text-center">
+          How it Works
+        </h1>
 
-      <div className="max-w-4xl mx-auto">
-        {/* ─────────────  Data You Can Trust  ───────────── */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center space-y-8 sm:space-y-0 sm:space-x-16 mb-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div className="flex flex-col items-center space-y-2">
-            <MapIcon className="w-16 h-16 text-blue-600" />
-            <span className="text-gray-700 dark:text-gray-300">
-              Property‑level polygons
-            </span>
-          </div>
-          <div className="flex flex-col items-center space-y-2">
-            <LockClosedIcon className="w-16 h-16 text-purple-600" />
-            <span className="text-gray-700 dark:text-gray-300">
-              Unique & accurate panel
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Connector */}
-        <motion.div
-          className="w-1/2 mx-auto border-l-2 border-dashed border-gray-200 dark:border-gray-700 h-16"
-          initial={{ scaleY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          style={{ transformOrigin: 'top' }}
-        />
-
-        {/* ─────────────  Best‑in‑class Data Science  ───────────── */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center space-y-8 sm:space-y-0 sm:space-x-12 mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
-            <CubeTransparentIcon className="w-20 h-20 text-yellow-500 mb-4" />
-            <span className="block font-semibold text-gray-900 dark:text-white mb-2">
-              +92% accuracy
-            </span>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">
-              High cardinality categorization
-            </p>
-          </div>
-
-          <div className="relative bg-gray-50 dark:bg-gray-800 p-8 rounded-3xl shadow-xl">
-            <ServerStackIcon className="w-24 h-24 text-blue-600 mb-4 mx-auto" />
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
-              Powerful insights into places, chains, and markets
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm text-center max-w-md mx-auto">
-              Sales estimation, demographics, business counts, planned
-              development, psychographics, social media traffic, audience
-              expenditures, climate data, and more.
-            </p>
-            <div className="mt-4 text-center">
-              <a
-                href="#"
-                className="inline-flex items-center text-blue-600 hover:underline text-sm font-semibold"
+        {/* ─────────────  Steps  ───────────── */}
+        <div className="space-y-20">
+          {steps.map((step, idx) => {
+            const flip = idx % 2 !== 0; // alternate image/text on desktop
+            return (
+              <motion.div
+                key={step.num}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
               >
-                Learn more <ArrowRightIcon className="w-4 h-4 ml-1" />
-              </a>
-            </div>
-          </div>
-        </motion.div>
+                <div className="bg-[#0B0E1C] rounded-3xl p-10 md:p-14 shadow-xl grid md:grid-cols-2 items-center gap-10">
+                  {/* Text */}
+                  <div className={`${flip ? 'md:order-2' : ''}`}>
+                    <span className="block text-[#3736FF] text-lg font-semibold mb-3">
+                      {step.num}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                      {step.title}
+                    </h3>
+                    <p className="text-gray-300 leading-relaxed mb-6">
+                      {step.desc}
+                    </p>
+                    <div className="flex items-center gap-4">
+                      {step.logos.map((logo) => (
+                        <img
+                          key={logo}
+                          src={logo}
+                          alt=""
+                          aria-hidden="true"
+                          className="w-10 h-10 rounded-lg shadow-sm dark:invert"
+                        />
+                      ))}
+                    </div>
+                  </div>
 
-        {/* Connector */}
-        <motion.div
-          className="w-1/2 mx-auto border-l-2 border-dashed border-gray-200 dark:border-gray-700 h-16"
-          initial={{ scaleY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          style={{ transformOrigin: 'top' }}
-        />
-
-        {/* ─────────────  Seamless Business Integration  ───────────── */}
-        <motion.div
-          className="flex flex-col lg:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.0 }}
-        >
-          {/* Placeholder illustration */}
-          <div className="flex-1">
-            <div className="w-full h-64 bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-lg" />
-          </div>
-
-          {/* Three integration cards */}
-          <div className="flex-1 space-y-8">
-            {[
-              {
-                title: 'Platform',
-                text:
-                  'Explore dashboards, exports and create custom reports directly on our platform.',
-              },
-              {
-                title: 'API',
-                text:
-                  'Query PAPI, Relam’s robust API to programmatically ingest our data into your own tech stack.',
-              },
-              {
-                title: 'Feeds',
-                text: 'Export Relam’s proprietary data automatically.',
-              },
-            ].map(({ title, text }) => (
-              <div key={title} className="space-y-2">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {title}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {text}
-                </p>
-                <a
-                  href="#"
-                  className="inline-flex items-center text-blue-600 hover:underline text-sm font-semibold"
-                >
-                  Learn more <ArrowRightIcon className="w-4 h-4 ml-1" />
-                </a>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+                  {/* Illustration */}
+                  <div
+                    className={`${
+                      flip ? 'md:order-1' : ''
+                    } flex justify-center md:justify-end`}
+                  >
+                    <motion.img
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.25 }}
+                      src={step.img}
+                      alt={`${step.title} illustration`}
+                      className="w-full max-w-sm rounded-lg shadow-lg dark:invert"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
