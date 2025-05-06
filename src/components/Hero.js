@@ -4,6 +4,7 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import confetti from 'canvas-confetti';
 import marketingContent from '../marketingContent';
 import { validateEmail, submitEmailToWaitlist } from '../utils/emailSubmission';
+import { motion } from 'framer-motion';
 
 function Hero() {
   const rotatingWords = marketingContent.hero.rotatingWords;
@@ -20,8 +21,6 @@ function Hero() {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,43 +57,74 @@ function Hero() {
   };
 
   return (
-    <section id="hero" className="relative overflow-hidden bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 pt-40 pb-32 px-6 text-center">
-      {/* Floating Background Glow */}
+    <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-[#0B0E1C] via-[#101322] to-[#15192f] pt-36 pb-32 px-6 text-center text-white">
+      {/* Floating Background Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute animate-floatSlow top-[-100px] left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] bg-blue-500 opacity-20 rounded-full blur-3xl"></div>
-        <div className="absolute animate-floatSlower bottom-[-150px] right-[-100px] w-[500px] h-[500px] bg-blue-500 opacity-20 rounded-full blur-3xl"></div>
+        <div className="absolute animate-floatSlow top-[-150px] left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] bg-blue-600 opacity-20 rounded-full blur-3xl"></div>
+        <div className="absolute animate-floatSlower bottom-[-150px] right-[-100px] w-[500px] h-[500px] bg-purple-500 opacity-20 rounded-full blur-3xl"></div>
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-4">
+      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center px-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6"
+        >
           {marketingContent.hero.title}
-        </h1>
-        <div className="text-lg md:text-xl text-[#6b7280] mb-2">{marketingContent.hero.subheadline}</div>
-        <div className="mt-2 text-lg md:text-xl text-[#6b7280] leading-relaxed max-w-2xl mx-auto mb-10 h-10 relative overflow-hidden">
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8, ease: 'easeOut' }}
+          className="text-lg md:text-xl text-gray-300 mb-6"
+        >
+          {marketingContent.hero.subheadline}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mt-2 text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10 h-10 relative overflow-hidden"
+        >
           <div key={rotatingWords[currentWordIndex].text} className="absolute inset-0 transition-all duration-700 ease-in-out transform animate-slideUp">
             <span className={`${rotatingWords[currentWordIndex].color} font-semibold`}>
               Intelligence on your {rotatingWords[currentWordIndex].text}.
             </span>
           </div>
-        </div>
+        </motion.div>
 
         {success ? (
-          <p className="text-green-600 font-semibold text-lg">{marketingContent.hero.successMsg}</p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-green-400 font-semibold text-lg"
+          >
+            {marketingContent.hero.successMsg}
+          </motion.p>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-6 flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
-            <input 
+          <motion.form
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            onSubmit={handleSubmit}
+            className="mt-6 flex flex-col sm:flex-row gap-4 justify-center w-full max-w-2xl"
+          >
+            <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={marketingContent.hero.emailPlaceholder}
               required
-              className="px-6 py-4 rounded-full text-black border border-gray-300 w-full sm:w-auto flex-grow focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="px-6 py-4 rounded-full text-black border border-gray-300 w-full sm:w-auto flex-grow focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            <button 
+            <button
               type="submit"
               disabled={loading}
-              className={`flex items-center justify-center bg-[#0052cc] hover:bg-[#003d99] text-white font-semibold py-4 px-8 rounded-full text-lg transition transform hover:scale-105 shadow-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`flex items-center justify-center bg-blue-600 hover:bg-blue-500 text-white font-semibold py-4 px-8 rounded-full text-lg transition transform hover:scale-105 shadow-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {loading ? (
                 <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -105,16 +135,27 @@ function Hero() {
                 'Join Waitlist'
               )}
             </button>
-          </form>
+          </motion.form>
         )}
 
         {error && (
-          <p className="mt-4 text-red-600 font-medium">{error}</p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-4 text-red-400 font-medium"
+          >
+            {error}
+          </motion.p>
         )}
 
-        <p className="mt-4 text-sm text-gray-400">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-6 text-sm text-gray-400"
+        >
           Get early access to Relam.ai — launching soon 🚀
-        </p>
+        </motion.p>
       </div>
 
       {/* Tailwind Custom Animations */}

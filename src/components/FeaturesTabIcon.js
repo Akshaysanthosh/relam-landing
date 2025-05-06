@@ -1,21 +1,76 @@
+// FeaturesTabIcon.js
+// Unified 24×24 icons for the feature tabs
+
 import React from 'react';
 
-export default function FeaturesTabIcon({ type }) {
-  // Simple SVG icons for each feature type (customize as needed)
-  if (type === 'AI Insights') {
-    return (
-      <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" stroke="#0056F3" strokeWidth="2"/><circle cx="10" cy="10" r="3" fill="#0056F3"/></svg>
-    );
+const ACCENT   = '#0056F3';
+const INACTIVE = '#D1D5DB';
+
+export default function FeaturesTabIcon({ type, active = false, className = '' }) {
+  const stroke = active ? '#FFFFFF' : ACCENT;
+  const fillBg = active ? '#FFFFFF' : 'none';
+
+  switch (type) {
+    /* ── AI Insights ── */
+    case 'AI Insights':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" className={className}>
+          <circle cx="12" cy="12" r="9" stroke={stroke} strokeWidth="2" fill="none" />
+          <circle cx="12" cy="12" r="4" stroke={stroke} strokeWidth="2" fill="none" />
+          <circle cx="12" cy="4" r="1.5" fill={stroke} />
+        </svg>
+      );
+
+    /* ── Integrations ── */
+    case 'Integrations':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" className={className}>
+          <path
+            d="M8.5 15.5 6 18a4 4 0 0 0 5.7 5.6l3-3"
+            fill="none"
+            stroke={stroke}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M15.5 8.5 18 6a4 4 0 0 0-5.7-5.6l-3 3"
+            fill="none"
+            stroke={stroke}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+
+    /* ── Signal Quality ── */
+    case 'Signal Quality':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" className={className}>
+          <path
+            d="M12 2 4 5v6.8c0 3.9 2.8 7.9 8 10.2 5.2-2.3 8-6.3 8-10.2V5l-8-3z"
+            fill={fillBg}
+            stroke={stroke}
+            strokeWidth="2"
+            strokeLinejoin="round"
+          />
+          <polyline
+            points="9 12.5 11.5 15 15 10.5"
+            fill="none"
+            stroke={stroke}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+
+    default:
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" className={className}>
+          <circle cx="12" cy="12" r="3" fill={INACTIVE} />
+        </svg>
+      );
   }
-  if (type === 'Integrations') {
-    return (
-      <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="12" rx="4" fill="#0056F3"/><rect x="8" y="8" width="4" height="4" rx="2" fill="#A7C7FF"/></svg>
-    );
-  }
-  if (type === 'Data Governance') {
-    return (
-      <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="2" y="7" width="16" height="6" rx="3" fill="#0056F3"/><rect x="7" y="2" width="6" height="16" rx="3" fill="#A7C7FF"/></svg>
-    );
-  }
-  return null;
 }

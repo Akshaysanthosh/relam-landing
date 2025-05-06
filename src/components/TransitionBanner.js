@@ -24,7 +24,7 @@ export default function FeatureBanner() {
     <section className="w-full bg-gradient-to-r from-blue-50 via-white to-pink-50 py-20 rounded-b-3xl">
       <div className="max-w-7xl mx-auto text-center px-6">
         <h1 className="whitespace-nowrap overflow-hidden text-3xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-          Intelligence on your{" "}
+          Intelligence on your{" "} 
           <span className="inline-block relative w-[420px] h-[1em] align-middle">
             {rotatingWords.map((word, index) => (
               <span
